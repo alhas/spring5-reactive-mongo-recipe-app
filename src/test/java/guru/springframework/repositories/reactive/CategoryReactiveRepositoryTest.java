@@ -2,7 +2,7 @@ package guru.springframework.repositories.reactive;
 
 import guru.springframework.domain.Category;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
@@ -29,7 +29,7 @@ public class CategoryReactiveRepositoryTest {
         Category category = new Category();
         category.setDescription("Soups");
 
-        categoryReactiveRepository.save(category);
+        categoryReactiveRepository.save(category).block();
 
         Long count = categoryReactiveRepository.count().block();
         assertEquals(Long.valueOf(1L), count);
@@ -41,7 +41,7 @@ public class CategoryReactiveRepositoryTest {
         Category category = new Category();
         category.setDescription("Foo");
 
-        categoryReactiveRepository.save(category).then().block();
+        categoryReactiveRepository.save(category).block();
 
         Category fetchedCat = categoryReactiveRepository.findByDescription("Foo").block();
         assertNotNull(fetchedCat.getId());
