@@ -154,12 +154,10 @@ public class IngredientServiceImpl implements IngredientService {
 
         log.debug("Deleting ingredient: " + recipeId + ":" + idToDelete);
 
-       // Recipe recipeReactive = recipeReactiveRepository.findById(recipeId).block();
-        Recipe recipe = recipeRepository.findById(recipeId).get();
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
-
-        if (recipe != null) {
-
+        if (recipeOptional.isPresent()) {
+            Recipe recipe = recipeOptional.get();
             log.debug("found recipe");
 
             Optional<Ingredient> ingredientOptional = recipe
@@ -170,6 +168,7 @@ public class IngredientServiceImpl implements IngredientService {
 
             if (ingredientOptional.isPresent()) {
                 log.debug("found Ingredient");
+                Ingredient ingredientToDelete = ingredientOptional.get();
 
                 recipe.getIngredients().remove(ingredientOptional.get());
                 recipeRepository.save(recipe);
