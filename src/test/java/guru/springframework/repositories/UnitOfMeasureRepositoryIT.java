@@ -37,7 +37,7 @@ public class UnitOfMeasureRepositoryIT {
     }
 
     @Test
-    public void findByDescriptionCup() throws Exception {
+    public void findByDescriptionCup(){
 
         Optional<UnitOfMeasure> uomOptional = unitOfMeasureRepository.findByDescription("Cup");
 

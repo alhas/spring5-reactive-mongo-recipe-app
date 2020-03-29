@@ -8,7 +8,8 @@ import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
-import guru.springframework.repositories.UnitOfMeasureRepository;
+import guru.springframework.repositories.reactive.RecipeReactiveRepository;
+import guru.springframework.repositories.reactive.UnitOfMeasureReactiveRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -29,7 +30,10 @@ public class IngredientServiceImplTest {
     RecipeRepository recipeRepository;
 
     @Mock
-    UnitOfMeasureRepository unitOfMeasureRepository;
+    UnitOfMeasureReactiveRepository unitOfMeasureRepository;
+
+    @Mock
+    RecipeReactiveRepository recipeReactiveRepository;
 
     IngredientService ingredientService;
 
@@ -44,7 +48,7 @@ public class IngredientServiceImplTest {
         MockitoAnnotations.initMocks(this);
 
         ingredientService = new IngredientServiceImpl(ingredientToIngredientCommand, ingredientCommandToIngredient,
-                recipeRepository, unitOfMeasureRepository);
+                recipeReactiveRepository, recipeRepository, unitOfMeasureRepository);
     }
 
     @Test
@@ -74,7 +78,7 @@ public class IngredientServiceImplTest {
         when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //then
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId("1", "3");
+        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId("1", "3").block();
 
         //when
         assertEquals("3", ingredientCommand.getId());
@@ -99,7 +103,7 @@ public class IngredientServiceImplTest {
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
 
         //when
-        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command).block();
 
         //then
         assertEquals("3", savedCommand.getId());
