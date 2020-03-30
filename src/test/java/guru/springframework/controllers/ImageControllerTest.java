@@ -54,7 +54,7 @@ public class ImageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"));
 
-        verify(recipeService, times(1)).findCommandById(anyString());
+        verify(recipeService, times(1)).findCommandById(anyString()).block();
 
     }
 
