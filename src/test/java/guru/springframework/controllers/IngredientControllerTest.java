@@ -45,6 +45,7 @@ public class IngredientControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
+
     @Test
     public void testListIngredients() throws Exception {
         //given
